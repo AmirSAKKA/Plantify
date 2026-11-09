@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plantify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="boot" class="screen">
+      <p>Loading map…</p>
+    </div>
+
+    <div id="setup" class="screen" hidden>
+      <div class="card">
+        <p class="brand">Plantify</p>
+        <h1>Add a Google Maps key</h1>
+        <p class="lede">
+          The map is only used to trace the plot. The finished sheet is the
+          outline and its measurements.
+        </p>
+        <ol>
+          <li>In Google Cloud, enable the Maps JavaScript API and create a key.</li>
+          <li>
+            Save this as <code>.env</code> in the project folder, then restart
+            the dev server.
+          </li>
+        </ol>
+        <pre>VITE_GOOGLE_MAPS_API_KEY=your_key_here</pre>
+      </div>
+    </div>
+
+    <div id="workspace" hidden>
+      <section id="map-view">
+        <div id="map"></div>
+        <aside class="panel">
+          <p class="brand">Plantify</p>
+          <p id="hint" aria-live="polite"></p>
+          <p id="notice" hidden></p>
+          <div class="actions">
+            <button id="undo" type="button">Undo</button>
+            <button id="close-shape" class="primary" type="button" hidden>
+              Close shape
+            </button>
+            <button id="clear" type="button">Clear</button>
+            <button id="to-canvas" class="primary" type="button" hidden>
+              Show drawing
+            </button>
+          </div>
+        </aside>
+        <button id="locate" type="button">
+          <span class="locate-icon" aria-hidden="true"></span>
+          My location
+        </button>
+      </section>
+
+      <section id="canvas-view" hidden>
+        <header class="sheet-bar">
+          <p class="brand">Plantify</p>
+          <form id="planting" class="planting">
+            <span>Lines</span>
+            <label>
+              X
+              <input id="spacing-x" type="number" min="0.1" step="0.1" inputmode="decimal" aria-label="Distance between planting lines on X, in meters" />
+              m
+            </label>
+            <label>
+              Y
+              <input id="spacing-y" type="number" min="0.1" step="0.1" inputmode="decimal" aria-label="Distance between planting lines on Y, in meters" />
+              m
+            </label>
+            <label>
+              Gap
+              <input id="planting-gap" type="number" min="0" step="0.1" inputmode="decimal" aria-label="Gap between the planting layer and the fence, in meters" />
+              m
+            </label>
+            <span class="fence-mark">Fences</span>
+            <label>
+              <input id="fence-offset" type="number" min="0.1" step="0.1" inputmode="decimal" aria-label="Distance from the fence to the plants along it, in meters" />
+              m from the fence
+            </label>
+            <label>
+              <input id="fence-spacing" type="number" min="0.1" step="0.1" inputmode="decimal" aria-label="Distance between plants along the fence, in meters" />
+              m apart
+            </label>
+            <div class="direction">
+              <span id="row-dial-label">Direction</span>
+              <div
+                id="row-dial"
+                class="dial"
+                role="slider"
+                tabindex="0"
+                aria-labelledby="row-dial-label"
+                aria-valuemin="0"
+                aria-valuemax="180"
+                aria-valuenow="0"
+                aria-valuetext="0 degrees"
+              >
+                <svg viewBox="0 0 80 80" aria-hidden="true"></svg>
+              </div>
+              <output id="row-angle-readout">0°</output>
+            </div>
+            <p id="plant-count" class="count" hidden aria-live="polite">
+              <span id="field-count" class="count-field"></span>
+              <span id="fence-count" class="count-fence" hidden></span>
+            </p>
+          </form>
+          <div class="sheet-actions">
+            <button id="reset-view" type="button">Reset view</button>
+            <button id="back" type="button">Back to map</button>
+          </div>
+        </header>
+        <div id="sheet">
+          <canvas id="plot"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
